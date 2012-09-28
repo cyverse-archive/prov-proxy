@@ -1,6 +1,7 @@
 (ns prov-proxy.core
   (:gen-class)
   (:use prov-proxy.conf
+        prov-proxy.controllers
         compojure.core
         clojure-commons.error-codes
         [ring.middleware
@@ -21,6 +22,17 @@
 
 (defroutes prov-proxy-routes
   (GET "/" [] "Welcome to Prov-Proxy!")
+  
+  (GET "/0.1/object/:object-id" [object-id]
+       (trap "get-object-uuid" get-object-uuid object-id))
+
+  (PUT "/0.1/object" {body :body}
+       (trap "add-object" add-object body))
+
+  (PUT "/0.1/log" {body      :body
+                   caller-ip :remote-addr}
+       (trap "log" log-prov body caller-ip))
+  
   (route/not-found "Not found."))
 
 (defn parse-args
