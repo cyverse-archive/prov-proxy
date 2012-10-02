@@ -22,7 +22,6 @@
             [ring.adapter.jetty :as jetty]))
 
 (def repl-server (atom nil))
-(reset! repl-server (nrepls/start-server :port 7888))
 
 (defroutes prov-proxy-routes
   (GET "/" [] "Welcome to Prov-Proxy!")
@@ -84,4 +83,7 @@
 
      (nil? (:config opts))
      (init))
+
+    (reset! repl-server (nrepls/start-server :port 7888))
+    
     (jetty/run-jetty app {:port (listen-port)})))
