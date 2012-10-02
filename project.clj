@@ -9,7 +9,6 @@
                  [ring/ring-jetty-adapter "1.0.1"]
                  [ring/ring-devel "1.0.1"]
                  [org.iplantc/clojure-commons "1.2.1-SNAPSHOT"]]
-  :aot [prov-proxy.core]
   :main prov-proxy.core
   :min-lein-version "2.0.0"
   :plugins [[lein-ring "0.7.5"]
