@@ -4,6 +4,7 @@
                  [org.clojure/data.json "0.1.1"]
                  [org.clojure/tools.logging "0.2.3"]
                  [org.clojure/tools.cli "0.2.1"]
+                 [org.clojure/tools.nrepl "0.2.0-beta9"]
                  [slingshot "0.10.1"]
                  [compojure "1.0.1"]
                  [ring/ring-jetty-adapter "1.0.1"]

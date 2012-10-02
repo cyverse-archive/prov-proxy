@@ -13,12 +13,16 @@
          session
          stacktrace])
   (:require [clojure.tools.cli :as cli]
+            [clojure.tools.nrepl.server :as nrepls]
             [clojure.data.json :as json]
             [compojure.route :as route]
             [compojure.handler :as handler]
             [clojure-commons.query-params :as qp]
             [prov-proxy.json-body :as jb]
             [ring.adapter.jetty :as jetty]))
+
+(def repl-server (atom nil))
+(reset! repl-server (nrepls/start-server :port 7888))
 
 (defroutes prov-proxy-routes
   (GET "/" [] "Welcome to Prov-Proxy!")
