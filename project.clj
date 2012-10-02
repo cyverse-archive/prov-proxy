@@ -18,6 +18,10 @@
   :profiles {:dev {:resource-paths ["local-conf"]
                    :dependencies [[midje "1.4.0"]
                                   [lein-midje "2.0.0-SNAPSHOT"]]}}
+  :iplant-rpm {:summary "prov-proxy"
+               :dependencies ["iplant-service-config >= 0.1.0-5"]
+               :config-files ["log4j.properties"]
+               :config-path "conf"}
   :repositories
   {"iplantCollaborative"
    "http://projects.iplantcollaborative.org/archiva/repository/internal/"})
