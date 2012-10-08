@@ -4,6 +4,12 @@
   (:require [clojure.data.json :as json]
             [clojure.tools.logging :as log]))
 
+(defn rand-uuid
+  []
+  (str (java.util.UUID/randomUUID)))
+
+(def objects (atom (hash-map)))
+
 (defn has-field
   [in-map field]
   (when-not (contains? in-map field)
@@ -15,10 +21,18 @@
   (log/info (str desc ": " (json/json-str hmap)))
   hmap)
 
+(defn does-not-exist
+  [object-id]
+  (json/json-str
+   {:error_code ERR_DOES_NOT_EXIST
+    :object-id object-id}))
+
 (defn get-object-uuid
   [object-id]
   (log-object "get-object" {:object-id object-id})
-  object-id)
+  (if (contains? @objects object-id)
+    {:uuid (get @objects object-id)}
+    {:status 404 :body (does-not-exist object-id)}))
 
 (defn add-object
   [object-map]
@@ -26,11 +40,13 @@
   (has-field object-map :name)
   (has-field object-map :desc)
 
-  (-> (hash-map :service_object_id (:id object-map)
-                :object_name       (:name object-map)
-                :object_desc       (:desc object-map))
-      (log-object "add-object")
-      json/json-str))
+  (let [new-uuid (rand-uuid)]
+    (-> (hash-map :service_object_id (:id object-map)
+                  :object_name       (:name object-map)
+                  :object_desc       (:desc object-map))
+        (log-object "add-object"))
+    (reset! objects (assoc @objects (:id object-map) new-uuid))
+    (assoc object-map :uuid new-uuid)))
 
 (defn log-prov
   [object-map caller-ip]
@@ -41,7 +57,7 @@
   (has-field object-map :category)
 
   (-> (hash-map
-       :uuid              (get-object-uuid (:object-id object-map))
+       :uuid              (:uuid (get-object-uuid (:object-id object-map)))
        :username          (:user object-map)
        :service_name      (:service object-map)
        :event_name        (:event object-map)
@@ -49,6 +65,6 @@
        :request_ipaddress caller-ip
        :proxy_user_id     (:proxy-user object-map)
        :event_data        (:data object-map))
-      (log-object "log-provenance")
-      json/json-str))
+      (log-object "log-provenance"))
+  (dissoc object-map :data))
 
