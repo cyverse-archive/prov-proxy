@@ -5,6 +5,7 @@ Adapter for interacting with the provenance API.
 ## Getting an Object's UUID
 
 HTTP Method: GET
+
 URL Path:    /0.1/object/<object-id>
 
 Returns a 200 status on success, along with a JSON body that looks like the following:
@@ -31,7 +32,9 @@ Additional keys are added depending on the error. A list of possible error_code 
 ## Registering an Object
 
 HTTP Method: PUT
+
 URL Path: /0.1/object
+
 Body Format: JSON
 
 Here's what the body of the request should look like:
@@ -74,7 +77,9 @@ Additional keys are added depending on the error. A list of possible error_code 
 ## Logging Provenance Information
 
 HTTP Method: PUT
+
 URL Path: /0.1/log
+
 Body Format: JSON
 
 The request body should look something like this:
