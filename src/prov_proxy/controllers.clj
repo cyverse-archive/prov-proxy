@@ -43,7 +43,8 @@
   (let [new-uuid (rand-uuid)]
     (-> (hash-map :service_object_id (:id object-map)
                   :object_name       (:name object-map)
-                  :object_desc       (:desc object-map))
+                  :object_desc       (:desc object-map)
+                  :parent_uuid       (:parent object-map))
         (log-object "add-object"))
     (reset! objects (assoc @objects (:id object-map) new-uuid))
     (assoc object-map :uuid new-uuid)))
