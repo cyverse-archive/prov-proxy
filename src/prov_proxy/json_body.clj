@@ -6,8 +6,9 @@
 
 (defn- json-body?
   [request]
-  (let [content-type (:content-type request)]
-    (not (empty? (re-find #"^application/json" content-type)))))
+  (if-let [content-type (:content-type request)]
+    (not (empty? (re-find #"^application/json" content-type)))
+    false))
 
 (defn- valid-method?
   [request]
