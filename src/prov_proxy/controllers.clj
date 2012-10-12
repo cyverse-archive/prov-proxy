@@ -18,7 +18,7 @@
 
 (defn log-object
   [hmap desc]
-  (log/info (str desc ": " (json/json-str hmap)))
+  (log/warn (str desc ": " (json/json-str hmap)))
   hmap)
 
 (defn does-not-exist
@@ -36,6 +36,8 @@
 
 (defn add-object
   [object-map]
+  (log/warn (str "add-object: " object-map))
+  
   (has-field object-map :id)
   (has-field object-map :name)
   (has-field object-map :desc)
@@ -51,14 +53,16 @@
 
 (defn log-prov
   [object-map caller-ip]
-  (has-field object-map :object-id)
+  (log/warn (str "log-prov: " object-map))
+  
+  (has-field object-map :id)
   (has-field object-map :user)
   (has-field object-map :service)
   (has-field object-map :event)
   (has-field object-map :category)
 
   (-> (hash-map
-       :uuid              (:uuid (get-object-uuid (:object-id object-map)))
+       :uuid              (:uuid (get-object-uuid (:id object-map)))
        :username          (:user object-map)
        :service_name      (:service object-map)
        :event_name        (:event object-map)
